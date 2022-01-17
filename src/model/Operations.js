@@ -44,7 +44,7 @@ const getById = async (collection, id) => {
     .toArray());
     return result[0] || null;
   } catch (err) {
-    return null;
+    return console.log(err.message);
   }
 };
 

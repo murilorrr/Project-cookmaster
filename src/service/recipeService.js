@@ -33,7 +33,6 @@ const insertOne = async (recipe) => {
 
 const getById = async (id) => {
   const getOperation = await recipes.getById(id);
-  console.log(getOperation);
   if (!getOperation) {
     throw myError(status.NOT_FOUND, 'recipe not found');
   }

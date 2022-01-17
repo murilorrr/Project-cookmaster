@@ -51,7 +51,7 @@ describe('12 - Crie um endpoint para cadastro de pessoas administradoras', () =>
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
