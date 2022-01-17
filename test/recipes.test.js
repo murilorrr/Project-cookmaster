@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const mongoDbUrl = `mongodb://${process.env.HOST || 'localhost'}:27017`;
+const MONGO_DB_URL = `mongodb://${process.env.HOST || 'mongodb'}:27017`;
 const url = 'http://localhost:3000';
 
 describe.only('3 - Crie um endpoint para o cadastro de receitas', () => {
@@ -12,7 +12,7 @@ describe.only('3 - Crie um endpoint para o cadastro de receitas', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
