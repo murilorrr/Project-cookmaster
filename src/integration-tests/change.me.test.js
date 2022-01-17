@@ -19,6 +19,7 @@ const user = {
   "name": "Murilo",
   "email": "murilorsv14@gmail.com",
   "password": "123451",
+  "role": "user",
 };
 
 describe('POST /users', () => {
@@ -47,25 +48,31 @@ describe('POST /users', () => {
         await DBServer.stop();
       });
 
-      console.log(response);
-
+      
       it('retorna o código de status 201', () => {
         expect(response).to.have.status(201);
       });
-
+      
       it('retorna um objeto', () => {
         expect(response.body).to.be.a('object');
       });
-
+      
       it('o objeto possui a propriedade "user"', () => {
         expect(response.body).to.have.property('user');
       });
-
-      it('a propriedade "user" possui o objeto de usuário',
-        () => {
-          expect(response.body.user)
-            .to.be.equal(user);
-        });
+      
+      it('a propriedade "user" possui o objeto de usuário sem a senha', () => {
+        const expectedUser = { ...user }
+        delete expectedUser.password;
+        
+        expect(response.body.user.email).to.be.equal(expectedUser.email);
+        expect(response.body.user.name).to.be.equal(expectedUser.name);
+        expect(response.body.user.role).to.be.equal(expectedUser.role);
+      });
+      
+      it('tem a propriedade _id do mongoDB', () => {
+        expect(response.body.user).have.a.property('_id');
+      });
     });
   });
 });
