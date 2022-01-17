@@ -1,60 +1,37 @@
+const statusCODE = require('http-status-codes').StatusCodes;
+const Joi = require('joi');
 const user = require('../model/Operations')('users');
-const { nameValidation, emailValidation, PasswordRequire } = require('../middleware/Validations');
-// const Joi = require('joi');
-// const statusCODE = require('http-status-codes').StatusCodes;
+const { myError } = require('../utils');
 
-// const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// const ObjError = (status) => ({
-//   status,
-//   message: 'Invalid entries. Try again.',
-// });
+const schema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().regex(regexEmail).required(),
+  password: Joi.string().required(),
+  role: Joi.string().required(),
+});
 
-// const joiObjInsert = Joi.object({
-//   name: Joi.string(),
-//   email: Joi.string().regex(regexEmail),
-// });
+const emailAlreadCreated = async (email) => {
+  const getOperation = await user.getOneByEmail(email);
+  if (getOperation[0]) throw myError(statusCODE.CONFLICT, 'Email already registered');
+};
 
-// const validateName = (product) => {
-//   const { name } = product;
-//   try {
-//     joiObjInsert.validate(name);
-//     return true;
-//   } catch (err) {
-//     throw new ObjError(statusCODE.BAD_REQUEST);
-//   }
-// };
-
-// const validateEmail = (product) => {
-//   const { email } = product;
-//   try {
-//     joiObjInsert.validate(email);
-//     return true;
-//   } catch (err) {
-//     throw new ObjError(statusCODE.BAD_REQUEST);
-//   }
-// };
+const validateProduct = (product) => {
+  const { error } = schema.validate(product);
+  if (error) throw myError(statusCODE.BAD_REQUEST, 'Invalid entries. Try again.');
+};
 
 const insertOne = async (product) => {
-  const { name, email, password } = product;
-  nameValidation(name);
-  await emailValidation(email);
-  PasswordRequire(password);
+  const { email } = product;
+  validateProduct(product);
+  await emailAlreadCreated(email);
 
   const insertOperation = await user.insertOne(product);
   delete insertOperation.password;
   return insertOperation || null;
 };
 
-const getOneByEmail = async (email) => {
-  const getOperation = await user.getOneByEmail(email);
-  if (getOperation.length === 0) {
-    return null;
-  }
-  return getOperation;
-};
-
 module.exports = {
   insertOne,
-  getOneByEmail,
 };

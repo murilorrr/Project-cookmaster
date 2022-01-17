@@ -7,7 +7,7 @@ require('dotenv').config();
 const MONGO_DB_URL = `mongodb://${process.env.HOST || 'mongodb'}:27017`;
 const url = 'http://localhost:3000';
 
-describe.only('3 - Crie um endpoint para o cadastro de receitas', () => {
+describe('3 - Crie um endpoint para o cadastro de receitas', () => {
   let connection;
   let db;
 
