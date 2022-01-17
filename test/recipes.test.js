@@ -4,10 +4,10 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/Cookmaster`;
+const mongoDbUrl = `mongodb://${process.env.HOST || 'localhost'}:27017`;
 const url = 'http://localhost:3000';
 
-describe('3 - Crie um endpoint para o cadastro de receitas', () => {
+describe.only('3 - Crie um endpoint para o cadastro de receitas', () => {
   let connection;
   let db;
 
