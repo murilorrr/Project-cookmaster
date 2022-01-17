@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const status = require('http-status-codes').StatusCodes;
 const recipes = require('../model/Operations')('recipes');
+const user = require('../model/Operations')('users');
 const { myError } = require('../utils');
 
 const recipeSchema = Joi.object({
@@ -9,6 +10,12 @@ const recipeSchema = Joi.object({
   preparation: Joi.string().required(),
   urlImg: Joi.string(),
   userId: Joi.string().required(),
+});
+
+const editRecipeSchema = Joi.object({
+  name: Joi.string().required(),
+  ingredients: Joi.string().required(),
+  preparation: Joi.string().required(),
 });
 
 const validateRecipe = (recipe) => {
@@ -39,8 +46,22 @@ const getById = async (id) => {
   return getOperation;
 };
 
+const editRecipe = async (recipe, id, userId) => {
+  const { error } = editRecipeSchema.validate(recipe);
+  if (error) throw myError(status.BAD_REQUEST, 'invalid formt');
+  const receita = await recipes.getById(id);
+  const isAdm = await user.getById(userId);
+  if (receita.userId === userId || isAdm.role === 'admin') {
+    const result = await recipes.updateOne(recipe, id);
+
+    return result >= 1 ? { ...receita, ...recipe } : myError(status.BAD_REQUEST, 'nada modificado');
+  } 
+  throw myError(status.UNAUTHORIZED, 'voce não é o dono pilantra');
+};
+
 module.exports = {
   getAll,
   insertOne,
   getById,
+  editRecipe,
 };

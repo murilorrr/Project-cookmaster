@@ -9,13 +9,16 @@ dotenv.config();
 const secret = process.env.SECRET || 'segredinho';
 
 const authMiddleware = (req, res, next) => {
+  let token;
   try {
-    const { authorization: token } = req.headers;
+    const { authorization } = req.headers;
+    token = authorization;
     
     const decoded = JWT.verify(token, secret);
     const { _id: id } = decoded.data[0];
     req.headers.id = id;
   } catch (err) {
+    if (!token) throw myError(status.UNAUTHORIZED, 'missing auth token');
     throw myError(status.UNAUTHORIZED, 'jwt malformed');
   }
 

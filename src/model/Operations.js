@@ -60,10 +60,27 @@ const getAll = async (collection) => {
   }
 };
 
+const updateOne = async (collection, product, id) => {
+  try {
+    console.log('new product', product);
+    const result = await connection()
+    .then((db) => db.collection(collection)
+    .updateOne(
+      { _id: ObjectId(id) },
+      { $set: product },
+      { returnDocument: 'after' },
+    ));
+    return result.modifiedCount || null;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = (collection) => ({
   insertOne: (product) => insertOne(collection, product),
   getOneByEmail: (email) => getOneByEmail(collection, email),
   getUser: (email, senha) => getUser(collection, email, senha),
   getAll: () => getAll(collection),
   getById: (id) => getById(collection, id),
+  updateOne: (product, id) => updateOne(collection, product, id),
 });
