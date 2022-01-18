@@ -51,10 +51,24 @@ const deleteRecipe = async (req, res, next) => {
   }
 };
 
+const insertImage = async (req, res, next) => {
+  try {
+    console.log('começo');
+    // return res.status(status.OK).send({ file: req.files });
+    const { id: userId } = req.headers;
+    const { id } = req.params;
+    await service.editImage(id, userId);
+    return res.status(status.OK).send({});
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAll,
   insertOne,
   getById,
   editRecipe,
   deleteRecipe,
+  insertImage,
 };

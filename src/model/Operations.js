@@ -89,6 +89,22 @@ const deleteOne = async (collection, id) => {
   }
 };
 
+const editImage = async (collection, id) => {
+  try {
+    const result = await connection()
+    .then((db) => db.collection(collection)
+    .findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: { image: `${id}.png` } },
+    )
+    .toArray());
+    console.log(result);
+    return result.value || null;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = (collection) => ({
   insertOne: (product) => insertOne(collection, product),
   getOneByEmail: (email) => getOneByEmail(collection, email),
@@ -97,4 +113,5 @@ module.exports = (collection) => ({
   getById: (id) => getById(collection, id),
   updateOne: (product, id) => updateOne(collection, product, id),
   deleteOne: (id) => deleteOne(collection, id),
+  editImage: (id) => editImage(collection, id),
 });

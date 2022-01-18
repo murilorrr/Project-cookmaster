@@ -1,4 +1,6 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
 const error = require('../middleware/error');
 
 const routers = require('../routes');
@@ -6,7 +8,9 @@ const routers = require('../routes');
 const app = express();
 
 app.use(express.json());
+app.use(express.static(path.join(`${__dirname}/../uploads`)));
 
+app.use(bodyParser.urlencoded({ extended: true }));
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();

@@ -69,10 +69,21 @@ const deleteOne = async (id, userId) => {
   throw myError(status.UNAUTHORIZED, 'voce não é o dono pilantra');
 };
 
+const editImage = async (id, userId) => {
+  const receita = await recipes.getById(id);
+  const isAdm = await user.getById(userId);
+  if (receita.userId === userId || isAdm.role === 'admin') {
+    const editOperation = await recipes.editImage(id);
+    return editOperation;
+  }
+  throw myError(status.UNAUTHORIZED, 'voce não é o dono pilantra');
+};
+
 module.exports = {
   getAll,
   insertOne,
   getById,
   editRecipe,
   deleteOne,
+  editImage,
 };
