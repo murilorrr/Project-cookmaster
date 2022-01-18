@@ -62,7 +62,6 @@ const getAll = async (collection) => {
 
 const updateOne = async (collection, product, id) => {
   try {
-    console.log('new product', product);
     const result = await connection()
     .then((db) => db.collection(collection)
     .updateOne(
@@ -76,6 +75,20 @@ const updateOne = async (collection, product, id) => {
   }
 };
 
+const deleteOne = async (collection, id) => {
+  try {
+    const result = await connection()
+    .then((db) => db.collection(collection)
+    .findOneAndDelete(
+      { _id: ObjectId(id) },
+      { returnOriginal: 'after' },
+    ));
+    return result.value || null;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = (collection) => ({
   insertOne: (product) => insertOne(collection, product),
   getOneByEmail: (email) => getOneByEmail(collection, email),
@@ -83,4 +96,5 @@ module.exports = (collection) => ({
   getAll: () => getAll(collection),
   getById: (id) => getById(collection, id),
   updateOne: (product, id) => updateOne(collection, product, id),
+  deleteOne: (id) => deleteOne(collection, id),
 });

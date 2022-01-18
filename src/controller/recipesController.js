@@ -40,9 +40,21 @@ const editRecipe = async (req, res, next) => {
   }
 };
 
+const deleteRecipe = async (req, res, next) => {
+  const { id } = req.params;
+  const { id: userId } = req.headers;
+  try {
+    await service.deleteOne(id, userId);
+    return res.status(status.NO_CONTENT).send({});
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAll,
   insertOne,
   getById,
   editRecipe,
+  deleteRecipe,
 };
