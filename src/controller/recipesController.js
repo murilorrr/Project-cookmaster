@@ -1,4 +1,5 @@
 const status = require('http-status-codes').StatusCodes;
+const fs = require('fs');
 const service = require('../service/recipeService');
 
 const getAll = async (req, res) => {
@@ -53,12 +54,21 @@ const deleteRecipe = async (req, res, next) => {
 
 const insertImage = async (req, res, next) => {
   try {
-    console.log('começo');
-    // return res.status(status.OK).send({ file: req.files });
     const { id: userId } = req.headers;
     const { id } = req.params;
-    await service.editImage(id, userId);
-    return res.status(status.OK).send({});
+    const result = await service.editImage(id, userId);
+    return res.status(status.OK).send(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getImageById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const stream = fs.createReadStream(`../${id}.jpeg`);
+    res.status(status.OK).json(stream);
   } catch (error) {
     next(error);
   }
@@ -71,4 +81,5 @@ module.exports = {
   editRecipe,
   deleteRecipe,
   insertImage,
+  getImageById,
 };

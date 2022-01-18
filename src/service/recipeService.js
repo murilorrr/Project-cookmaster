@@ -70,12 +70,14 @@ const deleteOne = async (id, userId) => {
 };
 
 const editImage = async (id, userId) => {
+  let result;
   const receita = await recipes.getById(id);
   const isAdm = await user.getById(userId);
   if (receita.userId === userId || isAdm.role === 'admin') {
     const editOperation = await recipes.editImage(id);
-    return editOperation;
+    if (editOperation >= 1) result = await recipes.getById(id);
   }
+  if (result) return result;
   throw myError(status.UNAUTHORIZED, 'voce não é o dono pilantra');
 };
 

@@ -93,13 +93,13 @@ const editImage = async (collection, id) => {
   try {
     const result = await connection()
     .then((db) => db.collection(collection)
-    .findOneAndUpdate(
+    .updateOne(
       { _id: ObjectId(id) },
-      { $set: { image: `${id}.png` } },
-    )
-    .toArray());
-    console.log(result);
-    return result.value || null;
+      { $set: { image: `localhost:3000/src/uploads/${id}.jpeg` } },
+      // { $set: { 'campo-imaginario': 'returned' } },
+      { returnNewDocument: true, new: true, upsert: true },
+    ));
+    return result.result.ok || null;
   } catch (error) {
     console.log(error.message);
   }
