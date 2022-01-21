@@ -2,15 +2,16 @@ const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/Cookmaster`;
+const MONGO_DB_URL = `mongodb://${process.env.HOST || 'mongodb'}:27017`;
 const url = 'http://localhost:3000';
+const DB_NAME = 'Cookmaster';
 
 describe('1 - Crie um endpoint para o cadastro de usuários', () => {
   let connection;
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -158,7 +159,7 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

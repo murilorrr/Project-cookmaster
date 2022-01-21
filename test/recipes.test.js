@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/Cookmaster`;
+const MONGO_DB_URL = `mongodb://${process.env.HOST || 'mongodb'}:27017`;
 const url = 'http://localhost:3000';
 
 describe('3 - Crie um endpoint para o cadastro de receitas', () => {
@@ -12,7 +12,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -194,7 +194,7 @@ describe('4 - Crie um endpoint para a listagem de receitas', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -310,7 +310,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -513,7 +513,7 @@ describe('7 - Crie um endpoint para a edição de uma receita', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -786,7 +786,7 @@ describe('8 - Crie um endpoint para a exclusão de uma receita', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -974,7 +974,7 @@ describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () 
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -1250,7 +1250,7 @@ describe('10 - Crie um endpoint para acessar a imagem de uma receita', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
