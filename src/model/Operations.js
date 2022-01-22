@@ -28,8 +28,7 @@ const getUser = async (collection, email, password) => {
   try {
     const result = await connection()
     .then((db) => db.collection(collection)
-    .find({ email, password }, { limit: 1 })
-    .toArray());
+    .findOne({ email, password }));
     return result || null;
   } catch (error) {
     return error.message;

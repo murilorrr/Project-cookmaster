@@ -24,7 +24,7 @@ const getTokenUser = async (email, senha) => {
   if (error) throw myError(status.UNAUTHORIZED, 'All fields must be filled');
   
   const user = await login.getUser(email, senha);
-  if (!user[0]) throw myError(status.UNAUTHORIZED, 'Incorrect username or password');
+  if (!user) throw myError(status.UNAUTHORIZED, 'Incorrect username or password');
   
   const token = jwt.sign({ data: user }, secret, JWTConfig);
   return token;
