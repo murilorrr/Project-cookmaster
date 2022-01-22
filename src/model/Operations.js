@@ -39,11 +39,10 @@ const getById = async (collection, id) => {
   try {
     const result = await connection()
     .then((db) => db.collection(collection)
-    .find({ _id: ObjectId(id) }, { limit: 1 })
-    .toArray());
-    return result[0] || null;
+    .findOne({ _id: ObjectId(id) }));
+    return result || null;
   } catch (err) {
-    return console.log(err.message);
+    console.log(err.message);
   }
 };
 

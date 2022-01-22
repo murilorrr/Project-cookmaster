@@ -15,7 +15,7 @@ const authMiddleware = (req, res, next) => {
     token = authorization;
     
     const decoded = JWT.verify(token, secret);
-    const { _id: id } = decoded.data[0];
+    const { _id: id } = decoded.data;
     req.headers.id = id;
   } catch (err) {
     if (!token) throw myError(status.UNAUTHORIZED, 'missing auth token');

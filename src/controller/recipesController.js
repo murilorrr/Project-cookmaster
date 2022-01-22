@@ -66,7 +66,6 @@ const insertImage = async (req, res, next) => {
 const getImageById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const stream = fs.createReadStream(`../${id}.jpeg`);
     res.status(status.OK).json(stream);
   } catch (error) {
